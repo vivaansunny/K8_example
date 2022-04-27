@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-keda
+spec:
+  selector:
+    matchLabels:
+      app: nginx-keda
+  template:
+    metadata:
+      labels:
+        app: nginx-keda
+    spec:
+      containers:
+      - name: nginx-keda
+        image: nginx
+        env:
+          - name: blob_connection_string
+            value: "DefaultEndpointsProtocol=https;AccountName=abcd1234276azure;AccountKey=nmOI1w6pWnxLcD++kMpXmMB0qyDWgaUvoPBsSD9L3g9V7EzZpCcMyCmSaHkVqGLzDnZtQ7UcUS9C+AStxYFQ0g==;EndpointSuffix=core.windows.net"
+           # value: https://abcd1234276azure.blob.core.windows.net/keda?sp=racwdl&st=2022-04-27T05:03:52Z&se=2022-04-27T13:03:52Z&spr=https&sv=2020-08-04&sr=c&sig=Iqy7APQCdaaGYVFYEXrL2sNbLX29y%2FgBLqwRcTJd0sY%3D
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
