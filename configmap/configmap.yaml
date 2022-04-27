@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: newconfigmap
+data:
+  index.html: "teting 1 2 3 \n4\n"
+  key: sunny

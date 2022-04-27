@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mynginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mynginx
+  template:
+    metadata:
+      labels:
+        app: mynginx
+    spec:
+      volumes:
+      - name: newconfigmap1
+        configMap:
+          name: newconfigmap
+          items:
+          - key: index.html
+            path: index.html
+
+      - name: newconfigmap2
+        configMap:
+          name: newconfigmap
+          items:
+          - key: key
+            path: key
+      containers:
+      - name: mynginxs
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: newconfigmap1
+          mountPath: /usr/share/nginx/html
+        - name: newconfigmap2
+          mountPath: /usr/share/nginx/
+          
+       
+          
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysvc
+spec:
+  type: LoadBalancer
+  selector:
+    app: mynginx
+  ports:
+  - port: 80
+    targetPort: 80
